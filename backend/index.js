@@ -27,20 +27,27 @@ app.post("/todo", async (req, res) =>{
 
 
 app.get("/todos", async (req,res) => {
-    const todos = await todo.find({} );
+    const todos = await todo.find({});
+
     res.json({todos})
-
-
 })
 
-app.put("/completed", (req,res) => {
+app.put("/completed", async function (req,res){
     const updaatePayload = req.body;
     const parsedPayload = updateTodo.parse(updaatePayload);
     if(!parsedPayload.success) {
         res.status(411).json({
             msg: "Sent the wrong inputs"
         })
+        return;
     }
-    return;
+    await todo.update({
+        _id: req.body.id
+    }, {
+        completed: true
+    })
+    res.json({
+         msg: 'Todo marked as completed'
+    })
 
 })
