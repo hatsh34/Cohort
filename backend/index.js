@@ -6,9 +6,9 @@ const port = 3000;
 app.use(express.json());
 
 
-app.post("/todo", async (req, res) =>{
+app.post("/todo", async function (req, res){
     const createPayload = req.body;
-    const parsedPayload = createTodo.parse(createPayload);
+    const parsedPayload = createTodo.safeParse(createPayload);
     if (!parsedPayload.success) {
         res.status(411).json({
             msg:"Sent the wrong inputs"
