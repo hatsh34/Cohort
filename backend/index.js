@@ -1,5 +1,5 @@
 const express = require('express');
-const { createTodo } = require('./types');
+const { createTodo, updateTodo } = require('./types');
 const { todo } = require('./db');
 const app = express();
 const port = 3000;
@@ -13,7 +13,7 @@ app.post("/todo", async (req, res) =>{
         res.status(411).json({
             msg:"Sent the wrong inputs"
         })
-        return;
+        return; 
     }
     await todo.create({
         title: createPayload.title,
@@ -33,8 +33,8 @@ app.get("/todos", async (req,res) => {
 })
 
 app.put("/completed", async function (req,res){
-    const updaatePayload = req.body;
-    const parsedPayload = updateTodo.parse(updaatePayload);
+    const updatePayload = req.body;
+    const parsedPayload = updateTodo.parse(updatePayload);
     if(!parsedPayload.success) {
         res.status(411).json({
             msg: "Sent the wrong inputs"
@@ -50,4 +50,8 @@ app.put("/completed", async function (req,res){
          msg: 'Todo marked as completed'
     })
 
+})
+
+app.listen(port, () => {
+    console.log(`server is running on port ${port}`)
 })
